@@ -40,7 +40,7 @@ export default {
       book: '',
       rendition: '',
       themes: '',
-      ifTileAndMenuShow: true,
+      ifTileAndMenuShow: false,
       fontSizeList: [
         {fontSize: 12},
         {fontSize: 14},
