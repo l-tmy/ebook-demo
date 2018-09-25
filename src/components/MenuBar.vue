@@ -6,7 +6,7 @@
              :class="{'hide-box-shadow'
              : isSettingShow || !ifTileAndMenuShow}">
           <div class="icon-wrapper">
-            <span class="icon-menu icon"></span>
+            <span class="icon-menu icon" @click="showSetting(3)"></span>
           </div>
           <div class="icon-wrapper">
             <span class="icon-point-up icon" @click="showSetting(2)"></span>
@@ -66,6 +66,11 @@
           </div>
         </div>
       </transition>
+      <content-view :ifShowContent="ifShowContent"
+                    v-show="ifShowContent"
+                    :navigation="navigation"
+                    :bookAvailable="bookAvailable"
+                    @jumpTo="jumpTo"></content-view>
       <transition name="fade">
         <div class="content-mask"
           v-show="ifShowContent"
@@ -75,8 +80,12 @@
 </template>
 
 <script>
+import ContentView from '@/components/Content'
 export default {
   name: 'MenuBar',
+  components: {
+    ContentView
+  },
   // props: ['ifTileAndMenuShow']
   props: {
     ifTileAndMenuShow: {
@@ -92,16 +101,22 @@ export default {
   },
   data() {
     return {
-      isSettingShow: true,
+      isSettingShow: false,
       showTag: 0,
       progress: 0,
-      ifShowContent: true // 目录
+      ifShowContent: false // 目录
     }
   },
   methods: {
     showSetting(showTag) {
-      this.isSettingShow = true
       this.showTag = showTag
+      if (showTag === 3) {
+        this.isSettingShow = false
+        this.ifShowContent = true
+      } else {
+        this.ifShowContent = false
+        this.isSettingShow = true
+      }
     },
     hideSetting() {
       this.isSettingShow = false
@@ -123,6 +138,10 @@ export default {
     onProgressInput(progress) {
       this.progress = progress
       this.$refs.progress.style.backgroundSize = `${this.progress}% 100%`
+    },
+    // 目录跳转
+    jumpTo(href) {
+      this.$emit('jumpTo', href)
     }
   }
 }
@@ -136,7 +155,7 @@ export default {
       display: flex;
       left:0;
       bottom:0;
-      z-index: 102;
+      z-index: 104;
       width:100%;
       height: px2rem(48);
       background-color: #fff;
