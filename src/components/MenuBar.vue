@@ -67,7 +67,9 @@
         </div>
       </transition>
       <transition name="fade">
-        <div></div>
+        <div class="content-mask"
+          v-show="ifShowContent"
+          @click="hideContent"></div>
       </transition>
     </div>
 </template>
@@ -92,7 +94,8 @@ export default {
     return {
       isSettingShow: true,
       showTag: 0,
-      progress: 0
+      progress: 0,
+      ifShowContent: true // 目录
     }
   },
   methods: {
@@ -104,6 +107,7 @@ export default {
       this.isSettingShow = false
     },
     hideContent() {
+      this.ifShowContent = false
     },
     setFontSize(fontSize) {
       this.$emit('setFontSize', fontSize)
@@ -132,7 +136,7 @@ export default {
       display: flex;
       left:0;
       bottom:0;
-      z-index: 101;
+      z-index: 102;
       width:100%;
       height: px2rem(48);
       background-color: #fff;
@@ -284,6 +288,16 @@ export default {
           }
         }
       }
+    }
+    .content-mask{
+      position: absolute;
+      top:0;
+      left:0;
+      z-index: 101;
+      display: flex;
+      width:100%;
+      height:100%;
+      background:rgba(51,51,51,.8);
     }
   }
 </style>
